@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+BASEDIR="$( dirname "`readlink -m "${0}"`" )"
+
+cat <<EOF > "/etc/cron.d/cluster"
+# /etc/cron.d/cluster: crontab fragment for cluster
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+0 16     * * *   root    cd / && "${BASEDIR}/disk_space"
+#
+EOF
+
