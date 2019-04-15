@@ -9,7 +9,7 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # m h dom mon dow user  command
-0 16     * * *   root    cd / && "${BASEDIR}/disk_space"
+0   3  *   *   *  root  cd / && "${BASEDIR}/disk_space"
 #
 EOF
 
