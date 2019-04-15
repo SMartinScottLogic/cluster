@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+update="$( date +%s )"
+(
+echo -n "db.drives.insertMany( ["
+df -B1 --output=source,fstype,size,used,avail,target | grep '^/' | sed -E 's|\s+| |g' | while read line
+do
+  src="$( echo "${line}" | cut -d' ' -f1 )"
+  fstype="$( echo "${line}" | cut -d' ' -f2 )"
+  size="$( echo "${line}" | cut -d' ' -f3 )"
+  used="$( echo "${line}" | cut -d' ' -f4 )"
+  avail="$( echo "${line}" | cut -d' ' -f5 )"
+  target="$( echo "${line}" | cut -d' ' -f6- )"
+
+  label="$( blkid -s LABEL "${src}" | sed 's/.*LABEL=//; s/"//g' )"
+  uuid="$( blkid -s UUID "${src}" | sed 's/.*UUID=//; s/"//g' )"
+  echo -n "{\"update\":${update},\"source\":\"${src}\",\"fstype\":\"${fstype}\",\"size\":${size},\"used\":${used},\"avail\":${avail},\"target\":\"${target}\",\"label\":\"${label}\",\"uuid\":\"${uuid}\"},"
+done
+echo "] );"
+) | sed 's|,]|]|'
