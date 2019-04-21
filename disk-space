@@ -14,7 +14,7 @@ do
 
   label="$( blkid -s LABEL "${src}" | sed 's/.*LABEL=//; s/"//g' )"
   uuid="$( blkid -s UUID "${src}" | sed 's/.*UUID=//; s/"//g' )"
-  echo -n "{\"update\":${update},\"source\":\"${src}\",\"fstype\":\"${fstype}\",\"size\":${size},\"used\":${used},\"avail\":${avail},\"target\":\"${target}\",\"label\":\"${label}\",\"uuid\":\"${uuid}\"},"
+  echo -n "{\"update\":${update}, \"source\":\"${src}\", \"fstype\":\"${fstype}\", \"size\":${size}, \"used\":${used}, \"avail\":${avail}, \"target\":\"${target}\", \"label\":\"${label}\", \"uuid\":\"${uuid}\"}, "
 done
 echo "] );"
-) | sed 's|,]|]|'
+) | sed 's|, ]|]|' | tee /dev/stderr | mongo gen8/cluster
